@@ -1,0 +1,117 @@
+﻿@page "/Playground"
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-16">
+    <MudGrid>
+        <MudItem md="8" Class="mud-text-align-center my-auto">
+            <Bwip BarcodeType="@BarcodeType"
+                  Text="@Text"
+                  IncludeText="@IncludeText"
+                  TextXAlign="@TextXAlign"
+                  TextYAlign="@TextYAlign"
+                  ScaleX="@ScaleX"
+                  ScaleY="@ScaleY"
+                  Height="@Height"
+                  Width="@Width"
+                  Rotate="@Rotate" />
+        </MudItem>
+        <MudItem md="4">
+            <MudCard>
+                <MudCardContent>
+                    <MudAutocomplete Label="Barcode type"
+                                     SearchFunc="@Search" Immediate="true" MinCharacters="0"
+                                     @bind-Value="BarcodeType"
+                                     Text="@BarcodeType.ToString()" />
+
+                    <MudSelect Label="Barcode type"
+                               @bind-Value="BarcodeType"
+                               Text=@BarcodeType.ToString()>
+                        @foreach (var item in Enum.GetValues(typeof(BarcodeType)).Cast<BarcodeType>().ToArray())
+                        {
+                            <MudSelectItem Value="item">
+                                @item
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudTextField Label="Text"
+                                  @bind-Value="Text">
+                    </MudTextField>
+                    <MudCheckBox Label="Include"
+                                 @bind-Checked="IncludeText">
+                    </MudCheckBox>
+                    <MudSelect Label="x"
+                               @bind-Value="TextXAlign">
+                        @foreach (var item in Enum.GetValues(typeof(TextXAlign)).Cast<TextXAlign>().ToArray())
+                        {
+                            <MudSelectItem Value="item">
+                                @item
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSelect Label="y"
+                               @bind-Value="TextYAlign">
+                        @foreach (var item in Enum.GetValues(typeof(TextYAlign)).Cast<TextYAlign>().ToArray())
+                        {
+                            <MudSelectItem Value="item">
+                                @item
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                    <MudSlider @bind-Value="ScaleX"
+                               Step="1"
+                               Min="0" Max="10">
+                        Scale x:
+                        @ScaleX
+                    </MudSlider>
+                    <MudSlider @bind-Value="ScaleY"
+                               Step="1"
+                               Min="0" Max="10">
+                        Scale y:
+                        @ScaleY
+                    </MudSlider>
+                    <MudSlider @bind-Value="Height"
+                               Step="5"
+                               Min="0" Max="100">
+                        Height (mm):
+                        @Height
+                    </MudSlider>
+                    <MudSlider @bind-Value="Width"
+                               Step="5"
+                               Min="0" Max="100">
+                        Width (mm):
+                        @Width
+                    </MudSlider>
+                    <MudSelect Label="Rotate"
+                               @bind-Value="Rotate" Text=@Rotate.ToString()>
+                        @foreach (var item in Enum.GetValues(typeof(Rotate)).Cast<Rotate>().ToArray())
+                        {
+                            <MudSelectItem Value="item">
+                                @item
+                            </MudSelectItem>
+                        }
+                    </MudSelect>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+
+@code {
+    public BarcodeType BarcodeType { get; set; } = BarcodeType.code128;
+    public string Text { get; set; }
+    public bool IncludeText { get; set; }
+    public TextXAlign TextXAlign { get; set; }
+    public TextYAlign TextYAlign { get; set; }
+    public int ScaleX { get; set; } = 2;
+    public int? ScaleY { get; set; }
+    public int Height { get; set; }
+    public int? Width { get; set; }
+    public Rotate Rotate { get; set; }
+
+    public IEnumerable<BarcodeType> barcodeTypeList = Enum.GetValues(typeof(BarcodeType)).Cast<BarcodeType>().ToList();
+    private Task<IEnumerable<BarcodeType>> Search(string value)
+    {
+        var list = barcodeTypeList.Where(x => x.ToString().Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        return Task.FromResult(list);
+    }
+}
