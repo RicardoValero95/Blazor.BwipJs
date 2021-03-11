@@ -1,30 +1,35 @@
+﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using System;
 using System.Threading.Tasks;
 
 namespace Blazor.BwipJs
 {
+    public interface IBwipJsInterop : IAsyncDisposable
+    {
+		ValueTask Create(ElementReference canvasReference, Option option);
+    }
+
     // This class provides an example of how JavaScript functionality can be wrapped
     // in a .NET class for easy consumption. The associated JavaScript module is
     // loaded on demand when first needed.
     //
     // This class can be registered as scoped DI service and then injected into Blazor
     // components for use.
-
-    public class ExampleJsInterop : IAsyncDisposable
+    public class BwipJsInterop : IBwipJsInterop
     {
         private readonly Lazy<Task<IJSObjectReference>> moduleTask;
 
-        public ExampleJsInterop(IJSRuntime jsRuntime)
+        public BwipJsInterop(IJSRuntime jsRuntime)
         {
             moduleTask = new(() => jsRuntime.InvokeAsync<IJSObjectReference>(
-               "import", "./_content/Blazor.BwipJs/exampleJsInterop.js").AsTask());
+               "import", "./_content/Blazor.BwipJs/bwipJsInterop.js").AsTask());
         }
 
-        public async ValueTask<string> Prompt(string message)
+        public async ValueTask Create(ElementReference canvasReference, Option option)
         {
             var module = await moduleTask.Value;
-            return await module.InvokeAsync<string>("showPrompt", message);
+            await module.InvokeVoidAsync("create", canvasReference, option);
         }
 
         public async ValueTask DisposeAsync()

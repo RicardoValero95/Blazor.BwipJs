@@ -1,21 +1,9 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.JSInterop;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Blazor.BwipJs
 {
-    /// <summary>
-    /// https://github.com/mariusmuntean/ChartJs.Blazor/blob/master/src/ChartJs.Blazor/Chart.razor
-    /// https://github.com/KristofferStrube/Blazor.Popper
-    /// https://code-maze.com/wrapping-javascript-libraries-with-csharp-in-blazor-webassembly/
-    /// https://github.com/CodeMazeBlog/BlazorWasmJsInterop/tree/wrapping-js-library-blazor-webassembly/BlazorWasmJSInteropExamples/BlazorWasm.Toastr
-    /// </summary>
-    public partial class Bwip
+    public partial class Barcode
     {
         [Inject] private IBwipJsInterop BwipJsInterop { get; set; }
         [Parameter] public BarcodeType BarcodeType { get; set; } = 0;
