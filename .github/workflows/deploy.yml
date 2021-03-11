@@ -1,0 +1,29 @@
+name: Publish and Deploy Samples
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      
+      - name: Dotnet Publish
+        run: dotnet publish --configuration Release --output build
+        working-directory: ./samples/Blazor.BwipJs.Samples
+        
+      - name: GitHub Pages Deploy Action
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/wwwroot
+          force_orphan: true
