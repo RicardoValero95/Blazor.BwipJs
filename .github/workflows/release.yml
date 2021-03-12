@@ -23,13 +23,3 @@ jobs:
       - name: Dotnet Nuget Push   
         working-directory: ./src/Blazor.BwipJs/bin/Release
         run: dotnet nuget push Blazor.BwipJs.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
-        
-      - name: Create Release Action
-        uses: actions/create-release@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: true
