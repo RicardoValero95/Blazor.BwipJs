@@ -15,13 +15,6 @@ jobs:
         uses: actions/setup-dotnet@v1
         with:
           dotnet-version: '5.0.x'
-      
-      - name: Dotnet Restore #install dependencies
-        run: dotnet restore
-      
-      - name: Dotnet Build
-        run: dotnet build --configuration Release --no-restore
-        working-directory: ./src/Blazor.BwipJs
         
       - name: Dotnet Pack 
         working-directory: ./src/Blazor.BwipJs
