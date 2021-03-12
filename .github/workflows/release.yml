@@ -1,0 +1,42 @@
+name: Release NuGet
+
+on:
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+            
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      
+      - name: Dotnet Restore #install dependencies
+        run: dotnet restore
+      
+      - name: Dotnet Build
+        run: dotnet build --configuration Release --no-restore
+        working-directory: ./src/Blazor.BwipJs
+        
+      - name: Dotnet Pack 
+        working-directory: ./src/Blazor.BwipJs
+        run: dotnet pack -c Release -p:Version=${GITHUB_REF##*/v}
+
+      - name: Dotnet Nuget Push   
+        working-directory: ./src/Blazor.BwipJs/bin/Release
+        run: dotnet nuget push Blazor.BwipJs.*.nupkg -s https://api.nuget.org/v3/index.json -k ${{ secrets.NUGET_API_KEY }}
+        
+      - name: Create Release Action
+        uses: actions/create-release@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: true
