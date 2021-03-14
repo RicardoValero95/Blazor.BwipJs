@@ -1,0 +1,46 @@
+﻿@keyframes slide {
+    0% {
+        transform: translateX(-25%);
+    }
+
+    100% {
+        transform: translateX(25%);
+    }
+}
+
+.loading-background {
+    animation: slide 3s ease-in-out infinite alternate;
+    background-image: linear-gradient(-60deg,#594ae2 50%,#7467ef 50%);
+    bottom: 0;
+    left: -50%;
+    opacity: .5;
+    position: fixed;
+    right: -50%;
+    top: 0;
+    z-index: -1
+}
+
+.loading-grid {
+    display: grid;
+    place-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
+#blazor-error-ui {
+    background: unset;
+    box-shadow: unset;
+    padding: unset;
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    z-index: 9999;
+}
+
+    #blazor-error-ui .dismiss {
+        position: unset;
+        top: unset;
+        right: unset;
+    }
