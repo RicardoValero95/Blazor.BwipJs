@@ -5,7 +5,7 @@
 // Create a barcode
 export function create(canvasReference, option) {
     try {
-        console.log(JSON.stringify(option));
+        //console.log(JSON.stringify(option));
         // The return value is the canvas element
         let canvas = bwipjs.toCanvas(canvasReference, {
             bcid: option.barcodeType,           // Barcode type

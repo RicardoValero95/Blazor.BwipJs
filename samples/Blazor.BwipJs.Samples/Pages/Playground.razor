@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using MudBlazor.Extensions
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-16">
     <MudText Typo="Typo.h3" GutterBottom="true">Playground</MudText>
@@ -7,19 +8,21 @@
             <Barcode BarcodeType="@BarcodeType"
                      Text="@Text"
                      IncludeText="@IncludeText"
-                     TextXAlign="@TextXAlign"
-                     TextYAlign="@TextYAlign"
                      ScaleX="@ScaleX"
                      ScaleY="@ScaleY"
                      Height="@Height"
                      Width="@Width"
-                     Rotate="@Rotate" />
+                     TextXAlign="@TextXAlign" 
+                     TextYAlign="@TextYAlign"
+                     Rotate="@Rotate"/>
         </MudItem>
         <MudItem md="4">
             <MudCard>
                 <MudCardContent>
                     <MudAutocomplete Label="Barcode type" @bind-Value="BarcodeType"
-                                     SearchFunc="@Search" Immediate="true" MinCharacters="0" ResetValueOnEmptyText="true" />
+                                     SearchFunc="@Search" Immediate="true" MinCharacters="0" 
+                                     ResetValueOnEmptyText="true" 
+                                     ToStringFunc="@(e => $"{e.ToDescriptionString()}")"/>
                     <div style="display:flex; align-items:flex-end;">
                         <MudTextField Label="Text" @bind-Value="Text" Immediate="true"></MudTextField>
                         <MudTooltip Text="Include text">
@@ -32,7 +35,7 @@
                         @foreach (var item in Enum.GetValues(typeof(TextXAlign)).Cast<TextXAlign>().ToArray())
                         {
                             <MudSelectItem Value="item">
-                                @item
+                                @item.ToDescriptionString()
                             </MudSelectItem>
                         }
                     </MudSelect>
@@ -40,7 +43,7 @@
                         @foreach (var item in Enum.GetValues(typeof(TextYAlign)).Cast<TextYAlign>().ToArray())
                         {
                             <MudSelectItem Value="item">
-                                @item
+                                @item.ToDescriptionString()
                             </MudSelectItem>
                         }
                     </MudSelect>
@@ -48,7 +51,7 @@
                         @foreach (var item in Enum.GetValues(typeof(Rotate)).Cast<Rotate>().ToArray())
                         {
                             <MudSelectItem Value="item">
-                                @item
+                                @item.ToDescriptionString()
                             </MudSelectItem>
                         }
                     </MudSelect>
@@ -108,7 +111,7 @@
 
     private Task<IEnumerable<BarcodeType>> Search(string? value)
     {
-        var list = BarcodeTypeList.Where(x => x.ToString().Contains(value, StringComparison.InvariantCultureIgnoreCase));
+        var list = BarcodeTypeList.Where(x => x.ToDescriptionString().Contains(value, StringComparison.InvariantCultureIgnoreCase));
         return Task.FromResult(list);
     }
 }

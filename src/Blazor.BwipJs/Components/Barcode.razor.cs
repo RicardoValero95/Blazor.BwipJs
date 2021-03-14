@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using System.Threading.Tasks;
 
 namespace Blazor.BwipJs
@@ -15,14 +16,13 @@ namespace Blazor.BwipJs
         [Parameter] public int? ScaleY { get; set; }
         [Parameter] public int Height { get; set; } = 10;
         [Parameter] public int? Width { get; set; }
-        [Parameter] public Rotate Rotate { get; set; }
+        [Parameter] public Rotate Rotate { get; set; } = Rotate.N;
 
-        public ElementReference CanvasReference { get; set; } = new ElementReference();
-        private Option Option { get; set; }
+        private ElementReference CanvasReference { get; set; } = new();
+        private Option Option => new (Text, BarcodeType, ScaleX, ScaleY, Height, Width, IncludeText, TextXAlign, TextYAlign, Rotate);
 
         protected override async Task OnAfterRenderAsync(bool firstRender)
         {
-            Option = new Option(Text, BarcodeType, ScaleX, ScaleY, Height, Width, IncludeText, TextXAlign, TextYAlign, Rotate);
             await BwipJsInterop.Create(CanvasReference, Option);
             await base.OnAfterRenderAsync(firstRender);
         }
