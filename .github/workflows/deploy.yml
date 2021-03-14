@@ -18,8 +18,7 @@ jobs:
           dotnet-version: '5.0.x'
       
       - name: Dotnet Publish
-        run: dotnet publish --configuration Release --output build
-        working-directory: ./samples/Blazor.BwipJs.Samples
+        run: dotnet publish samples/Blazor.BwipJs.Samples/Blazor.BwipJs.Samples.csproj --configuration Release --output build
         
       - name: GitHub Pages Deploy Action
         uses: peaceiris/actions-gh-pages@v3
